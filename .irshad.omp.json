@@ -30,7 +30,7 @@
 					"style": "plain",
 					"properties": {
 						"prefix": "",
-						"template": "{{ if .SSHSession }}  {{ end }}<p:blue>{{ .UserName }}</> <p:gray>@</> <p:lime>{{ .ComputerName }}</>"
+						"template": "{{ if .SSHSession }}  {{ end }}<p:blue>{{ .UserName }}</> <p:gray>@</> <p:lime>{{ .HostName }}</>"
 					}
 				},
 				{

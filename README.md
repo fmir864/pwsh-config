@@ -1,0 +1,1 @@
+Contains configuration related to Powershell Core and Oh My Posh

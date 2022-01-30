@@ -1,0 +1,196 @@
+﻿{
+	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+	"palette": {
+		"red": "#FE5A30",
+		"orange": "#FEC130",
+		"yellow": "#FEFD30",
+		"green": "#30FE5A",
+		"blue": "#3098FE",
+		"cyan": "#30FEFD",
+		"lime": "#ccff00",
+		"gray": "#BFBFBF"
+	},
+	"final_space": true,
+	"blocks": [
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"newline": true,
+			"segments": [
+				{
+					"type": "root",
+					"style": "plain",
+					"foreground": "p:yellow",
+					"properties": {
+						"prefix": ""
+					}
+				},
+				{
+					"type": "session",
+					"style": "plain",
+					"properties": {
+						"prefix": "",
+						"template": "{{ if .SSHSession }}  {{ end }}<p:blue>{{ .UserName }}</> <p:gray>@</> <p:lime>{{ .ComputerName }}</>"
+					}
+				},
+				{
+					"type": "path",
+					"style": "plain",
+					"foreground": "p:cyan",
+					"properties": {
+						"prefix": "<p:gray>in </>",
+						"style": "agnoster_short",
+						"max_depth": 2,
+						"enable_hyperlink": true,
+						"mapped_locations": {
+							"E:\\Development": "﬏ ",
+							"D:\\SonarQube": "虜 ",
+							"D:\\Gitlab.com": " "
+						}
+					}
+				},
+				{
+					"type": "git",
+					"style": "plain",
+					"foreground": "p:yellow",
+					"foreground_templates": [
+						"{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+						"{{ if gt .Ahead 0 }}p:cyan{{ end }}",
+						"{{ if gt .Behind 0 }}p:blue{{ end }}"
+					],
+					"properties": {
+						"fetch_stash_count": true,
+						"fetch_status": true,
+						"fetch_upstream_icon": true,
+						"prefix": "<p:gray>on</> <white>git:</>",
+						"template": "{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }}<p:red>  {{ .Working.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<p:green>  {{ .Staging.String }}</>{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}"
+					}
+				},
+				{
+					"type": "time",
+					"style": "plain",
+					"foreground": "p:gray",
+					"properties": {
+						"prefix": "[ ",
+						"postfix": "] ",
+						"time_format": "_2,  15:04"
+					}
+				},
+				{
+					"type": "node",
+					"style": "plain",
+					"foreground": "#6CA35E",
+					"properties": {
+						"prefix": "[]",
+						"postfix": "",
+						"display_version": false
+					}
+				},
+				{
+					"type": "python",
+					"style": "plain",
+					"foreground": "#96E072",
+					"properties": {
+						"prefix": "[]",
+						"postfix": "",
+						"display_version": false
+					}
+				},
+				{
+					"type": "dotnet",
+					"style": "plain",
+					"foreground": "#3891A6",
+					"properties": {
+						"prefix": "[]",
+						"postfix": "",
+						"display_version": false
+					}
+				},
+				{
+					"type": "java",
+					"style": "plain",
+					"foreground": "#ffffff",
+					"properties": {
+						"prefix": "[]",
+						"postfix": "",
+						"display_version": false
+					}
+				},
+				{
+					"type": "os",
+					"style": "plain",
+					"foreground": "p:blue",
+					"properties": {
+						"prefix": "[",
+						"postfix": "] ",
+						"display_distro_name": true
+					}
+				},
+				{
+					"type": "shell",
+					"style": "plain",
+					"foreground": "#ffffff",
+					"properties": {
+						"prefix": " ",
+						"postfix": " "
+					}
+				},
+				{
+					"type": "battery",
+					"style": "plain",
+					"foreground": "#ffffff",
+					"foreground_templates": [
+						"{{if eq \"Charging\" .State.String}}p:orange{{end}}",
+						"{{if eq \"Discharging\" .State.String}}p:red{{end}}",
+						"{{if eq \"Full\" .State.String}}p:green{{end}}"
+					],
+					"properties": {
+						"discharging_icon": "",
+						"charging_icon": "",
+						"charged_icon": "",
+						"prefix": "<#ffffff>[</>",
+						"postfix": "%<#ffffff>]</>"
+					}
+				},
+				{
+					"type": "exit",
+					"style": "plain",
+					"foreground": "p:green",
+					"foreground_templates": [
+						"{{ if gt .Code 0 }}p:red{{ end }}"
+					],
+					"properties": {
+						"always_enabled": true,
+						"template": "{{ if gt .Code 0 }}{{ else }}{{ end }}"
+					}
+				},
+				{
+					"type": "executiontime",
+					"style": "plain",
+					"foreground": "#ffffff",
+					"properties": {
+						"always_enabled": true,
+						"prefix": ""
+					}
+				}
+			]
+		},
+		{
+			"type": "prompt",
+			"alignment": "left",
+			"newline": true,
+			"segments": [
+				{
+					"foreground": "p:red",
+					"properties": {
+						"postfix": "",
+						"prefix": "",
+						"text": "亮"
+					},
+					"style": "plain",
+					"type": "text"
+				}
+			]
+		}
+	]
+}

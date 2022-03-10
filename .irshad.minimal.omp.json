@@ -2,42 +2,36 @@
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "blocks": [
     {
-      "type": "prompt",
       "alignment": "left",
       "newline": true,
       "segments": [
         {
-          "type": "session",
-          "style": "plain",
           "properties": {
-            "prefix": "",
-            "template": "<cyan>{{ .UserName }}</><darkGray>✓</><green>{{ .HostName }}</>"
-          }
-        },
-		{
-          "type": "root",
+            "template": "<cyan>{{ .UserName }}</><darkGray>\u2713</><green>{{ .HostName }}</> "
+          },
           "style": "plain",
+          "type": "session"
+        },
+        {
           "foreground": "#ff8080",
           "properties": {
-            "prefix": "<#757575,>as</> ",
-            "postfix": " ",
-            "root_icon": "root"
-          }
+            "root_icon": "root",
+            "template": "<#757575,>as</> root "
+          },
+          "style": "plain",
+          "type": "root"
         },
         {
-          "type": "path",
-          "style": "plain",
           "foreground": "lightYellow",
           "properties": {
-            "prefix": "<darkGray>in </>",
+            "max_depth": 2,
             "style": "agnoster_short",
-			"max_depth": 2,
-			"enable_hyperlink": true
-          }
+            "template": "<darkGray>in </>{{ .Path }} "
+          },
+          "style": "plain",
+          "type": "path"
         },
         {
-          "type": "git",
-          "style": "plain",
           "foreground": "#d6d6d6",
           "foreground_templates": [
             "{{ if or (.Working.Changed) (.Staging.Changed) }}#ff9248{{ end }}",
@@ -46,95 +40,90 @@
             "{{ if gt .Behind 0 }}#c5b6ad{{ end }}"
           ],
           "properties": {
-            "fetch_status": true,
+            "branch_ahead_icon": "\u2191",
+            "branch_behind_icon": "\u2193",
+            "branch_gone": "\u2262",
+            "branch_icon": "\ue0a0 ",
+            "branch_identical_icon": "\u2261",
+            "cherry_pick_icon": "\u2713 ",
+            "commit_icon": "\u25b7 ",
             "fetch_stash_count": true,
-            "branch_ahead_icon": "↑",
-            "branch_behind_icon": "↓",
-            "branch_gone": "≢",
-            "branch_icon": " ",
-            "branch_identical_icon": "≡",
-			"stash_count_icon": "",
-            "cherry_pick_icon": "✓ ",
-            "commit_icon": "▷ ",
-            "merge_icon": "◴ ",
+            "fetch_status": true,
+            "merge_icon": "\u25f4 ",
             "no_commits_icon": "[no commits]",
-            "rebase_icon": "Ɫ ",
-            "tag_icon": "▶ ",
-			"prefix": "<darkGray>on</> <white>git:</>",
-            "template": "{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} \u2502{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} {{ .StashCount }}{{ end }}"
-          }
-        },        
-		{
-          "type": "shell",
+            "rebase_icon": "\u2c62 ",
+            "tag_icon": "\u25b6 ",
+            "template": "<darkGray>on</> <white>git:</>{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} \u2502{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} {{ .StashCount }}{{ end }} "
+          },
           "style": "plain",
+          "type": "git"
+        },
+        {
           "foreground": "#007acc",
           "properties": {
-            "prefix": "<darkGray>using </>",
-            "postfix": ""
-          }
-        },
-		{
-          "type": "time",
+            "template": "<darkGray>using </>{{ .Name }}"
+          },
           "style": "plain",
+          "type": "shell"
+        },
+        {
           "foreground": "#91ddff",
           "properties": {
-            "prefix": " <darkGray>@</> [",
-            "postfix": "]",
-			"time_format": "_2, 15:04"
-          }
-        },
-		{
-			"type": "battery",
-			"style": "plain",
-			"foreground": "#ffffff",
-			"foreground_templates": [
-				"{{if eq \"Charging\" .State.String}}#FEC130{{end}}",
-				"{{if eq \"Discharging\" .State.String}}#FE5A30{{end}}",
-				"{{if eq \"Full\" .State.String}}#30FE5A{{end}}"
-			],
-			"properties": {
-				"prefix": "<#ffffff> [</>",
-				"postfix": "%<#ffffff>]</>"
-			}
-		},
-        {
-          "type": "exit",
+            "template": " <darkGray>@</> [{{ .CurrentDate | date .Format }}]",
+            "time_format": "_2, 15:04"
+          },
           "style": "plain",
+          "type": "time"
+        },
+        {
+          "foreground": "#ffffff",
+          "foreground_templates": [
+            "{{if eq \"Charging\" .State.String}}#FEC130{{end}}",
+            "{{if eq \"Discharging\" .State.String}}#FE5A30{{end}}",
+            "{{if eq \"Full\" .State.String}}#30FE5A{{end}}"
+          ],
+          "properties": {
+            "template": "<#ffffff> [</>{{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}%<#ffffff>]</>"
+          },
+          "style": "plain",
+          "type": "battery"
+        },
+        {
           "foreground": "#FE5A30",
           "properties": {
-            "template": "C:{{ if gt .Code 0 }}{{ .Code }}{{ end }}",
-			"postfix": "",
-            "always_numeric": true
-          }
+            "template": " C:{{ if gt .Code 0 }}{{ .Code }}{{ end }}"
+          },
+          "style": "plain",
+          "type": "exit"
         },
-		{
-			"type": "executiontime",
-			"style": "plain",
-			"foreground": "#ffffff",
-			"properties": {
-				"always_enabled": true,
-				"prefix": " "
-			}
-		}
-      ]
+        {
+          "foreground": "#ffffff",
+          "properties": {
+            "always_enabled": true,
+            "template": " {{ .FormattedMs }} "
+          },
+          "style": "plain",
+          "type": "executiontime"
+        }
+      ],
+      "type": "prompt"
     },
     {
-      "type": "prompt",
       "alignment": "left",
       "newline": true,
       "segments": [
         {
-          "type": "text",
-          "style": "plain",
           "foreground": "#FE5A30",
           "properties": {
-            "prefix": "",
-            "text": "$",
-            "postfix": ""
-          }
+            "template": "$"
+          },
+          "style": "plain",
+          "type": "text"
         }
-      ]
+      ],
+      "type": "prompt"
     }
   ],
-  "final_space": true
+  "final_space": true,
+  "version": 1
 }

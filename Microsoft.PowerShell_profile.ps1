@@ -22,12 +22,19 @@ function Get-PoshThemes {
 	}
 }
 
-set-alias vs StartVisualStudio
+set-alias vs19 StartVisualStudio2019
+set-alias vs22 StartVisualStudio2022
 
-function StartVisualStudio 
+function StartVisualStudio2019 
 {
     $slnfile = (Get-ChildItem -Path .\ -Filter *.sln)[0].Name
     Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.exe" $slnfile
+}
+
+function StartVisualStudio2022 
+{
+    $slnfile = (Get-ChildItem -Path .\ -Filter *.sln)[0].Name
+    Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" $slnfile
 }
 
 # This is an example profile for PSReadLine.

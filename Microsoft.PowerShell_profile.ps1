@@ -48,6 +48,8 @@ function Get-GitMirrorClone {
     else {
         git clone --mirror $RepoURL
     }
+
+    Write-Host ""
 }
 
 # This is an example profile for PSReadLine.

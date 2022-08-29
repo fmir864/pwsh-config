@@ -43,9 +43,13 @@ function Get-GitMirrorClone {
     )
 
     if (Test-Path -Path $DirName -PathType Container) {
-        Write-Host -ForegroundColor Green "Repo '$DirName' already exists."
+        Write-Host -ForegroundColor Green "Updating '$DirName'..."
+
+        git --git-dir $DirName remote update
     }
     else {
+        Write-Host -ForegroundColor Yellow "Mirroring '$DirName'..."
+
         git clone --mirror $RepoURL
     }
 

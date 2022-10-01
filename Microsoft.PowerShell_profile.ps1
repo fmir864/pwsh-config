@@ -11,17 +11,6 @@ function Update-EnvPath {
     [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
-function Get-PoshThemes {
-    Get-ChildItem -Path "~\AppData\Local\Programs\oh-my-posh\themes\*" -Include '*.omp.json' | Sort-Object Name | ForEach-Object -Process {
-        $esc = [char]27
-        Write-Host ""
-        Write-Host "$esc[1m$($_.BaseName)$esc[0m"
-        Write-Host ""
-        oh-my-posh --config $($_.FullName) --pwd $PWD
-        Write-Host 
-    }
-}
-
 # set-alias vs19 StartVisualStudio2019
 set-alias vs Open-VisualStudio2022
 

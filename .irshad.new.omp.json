@@ -1,0 +1,156 @@
+{
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "version": 2,
+    "final_space": true,
+    "blocks": [
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "type": "session",
+                    "style": "plain",
+                    "foreground": "#c386f1",
+                    "template": "\u250f[{{ if .SSHSession }}<#ffffff>\ueba9</>{{ end }}<#ffffff>\ueb99</>{{ .UserName }} @ <#ffffff>\uf108</>{{ .HostName }}]"
+                },
+                {
+                    "type": "root",
+                    "style": "plain",
+                    "foreground": "#ff4400",
+                    "template": " [\uf0e7]"
+                },
+                {
+                    "type": "time",
+                    "style": "plain",
+                    "foreground": "#7eb8da",
+                    "properties": {
+                        "time_format": "Jan 2, 15:04:05"
+                    },
+                    "template": " [<#ffffff>\uf073</> {{ .CurrentDate | date .Format }}]"
+                },
+                {
+                    "type": "os",
+                    "style": "plain",
+                    "foreground": "#26C6DA",
+                    "template": " [{{ if .WSL }}WSL at {{ end }}{{.Icon}}]",
+                    "properties": {
+                        "macos": "mac"
+                    }
+                },
+                {
+                    "type": "shell",
+                    "style": "plain",
+                    "foreground": "#0077c2",
+                    "template": " [ {{ .Name }} {{ .Version }}]"
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "right",
+            "segments": [
+                {
+                    "type": "battery",
+                    "style": "plain",
+                    "foreground": "#f36943",
+                    "foreground_templates": [
+                        "{{if eq \"Charging\" .State.String}}#40c4ff{{end}}",
+                        "{{if eq \"Discharging\" .State.String}}#ff5722{{end}}",
+                        "{{if eq \"Full\" .State.String}}#4caf50{{end}}"
+                    ],
+                    "properties": {
+                        "charged_icon": "\ue22f ",
+                        "charging_icon": "\ueb2d ",
+                        "discharging_icon": "\uf244 "
+                    },
+                    "template": "[{{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}\uf295]"
+                },
+                {
+                    "type": "sysinfo",
+                    "style": "plain",
+                    "foreground": "#8f43f3",
+                    "template": " [ {{ round .PhysicalPercentUsed .Precision }}%]",
+                    "properties": {
+                        "precision": 2
+                    }
+                },
+                {
+                    "type": "connection",
+                    "style": "plain",
+                    "foreground": "#61AFEF",
+                    "template": " [{{ if eq .Type \"wifi\"}}\uf1eb W{{ else if eq .Type \"ethernet\"}}\ueba9 E{{ end }}]"
+                },
+                {
+                    "type": "executiontime",
+                    "style": "plain",
+                    "foreground": "#be9ddf",
+                    "properties": {
+                        "threshold": 0,
+                        "style": "austin",
+                        "always_enabled": true
+                    },
+                    "template": " [<#ffffff>\uf252</> {{ .FormattedMs }}]"
+                },
+                {
+                    "type": "status",
+                    "style": "plain",
+                    "foreground": "green",
+                    "foreground_templates": [
+                        "{{ if .Error }}red{{ end }}"
+                    ],
+                    "properties": {
+                        "always_enabled": true
+                    },
+                    "template": " {{ if .Error }}\uea76{{else}}\uf42e{{ end }} "
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "type": "path",
+                    "style": "plain",
+                    "foreground": "#7eb8da",
+                    "properties": {
+                        "style": "full"
+                    },
+                    "template": "\u2516[<#98bfad>{{ .Path }}</>]"
+                },
+                {
+                    "type": "project",
+                    "style": "plain",
+                    "foreground": "#ffeb3b",
+                    "template": " [{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }}\uf487 {{.Version}}{{ end }} {{ if .Name }}{{ .Name }}{{ end }}{{ end }}]"
+                },
+                {
+                    "type": "git",
+                    "style": "plain",
+                    "foreground": "#ffa5d8",
+                    "properties": {
+                        "fetch_stash_count": true,
+                        "fetch_status": true,
+                        "fetch_upstream_icon": true
+                    },
+                    "template": " [<#ffffff>{{ .UpstreamIcon }}</>{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} <#ffffff>\uf044</> {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} <#ffffff>\uf046</> {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} <#ffffff>\ueb4b</> {{ .StashCount }}{{ end }}]"
+                }
+            ]
+        },
+        {
+            "type": "prompt",
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "type": "text",
+                    "style": "plain",
+                    "foreground": "#7eb8da",
+                    "template": "\u2514\u2500 ~"
+                }
+            ]
+        }
+    ]
+}

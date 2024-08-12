@@ -11,7 +11,7 @@
                 {
                     "type": "session",
                     "style": "plain",
-                    "foreground": "#F3B562",
+                    "foreground": "#7EB8DA",
                     "template": "\u250f[{{ if .SSHSession }}\ueba9{{ end }}\ueb99{{ .UserName }} @ \uf108{{ .HostName }}]"
                 },
                 {
@@ -23,7 +23,7 @@
                 {
                     "type": "time",
                     "style": "plain",
-                    "foreground": "#7eb8da",
+                    "foreground": "#F3B562",
                     "properties": {
                         "time_format": "Jan 2, 15:04:05"
                     },
@@ -53,7 +53,7 @@
                 {
                     "type": "battery",
                     "style": "plain",
-                    "foreground": "#f36943",
+                    "foreground": "#F36943",
                     "foreground_templates": [
                         "{{if eq \"Charging\" .State.String}}#40c4ff{{end}}",
                         "{{if eq \"Discharging\" .State.String}}#ff5722{{end}}",
@@ -114,7 +114,7 @@
                 {
                     "type": "path",
                     "style": "plain",
-                    "foreground": "#F3B562",
+                    "foreground": "#7EB8DA",
                     "properties": {
                         "style": "full"
                     },
@@ -147,7 +147,7 @@
                 {
                     "type": "text",
                     "style": "plain",
-                    "foreground": "#7eb8da",
+                    "foreground": "#7EB8DA",
                     "template": "\u2514\u279c"
                 }
             ]

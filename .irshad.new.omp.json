@@ -124,7 +124,7 @@
                     "type": "project",
                     "style": "plain",
                     "foreground": "#AB6A39",
-                    "template": " [{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }}\uf487 {{.Version}}{{ end }} {{ if .Name }}{{ .Name }}{{ end }}{{ end }}]"
+                    "template": " [{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }}\uf487 {{.Version}} {{ end }}{{ if .Name }}{{ .Name }}{{ end }}{{ end }}]"
                 },
                 {
                     "type": "git",

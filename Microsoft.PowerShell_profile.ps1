@@ -3,7 +3,7 @@ using namespace System.Management.Automation.Language
 
 Import-Module -Name Terminal-Icons
 
-oh-my-posh --init --shell pwsh --config "~\.irshad.new.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "~\.irshad.new.omp.json" | Invoke-Expression
 
 function Update-EnvPath {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") +

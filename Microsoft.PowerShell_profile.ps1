@@ -3,7 +3,7 @@ using namespace System.Management.Automation.Language
 
 Import-Module -Name Terminal-Icons
 
-oh-my-posh init pwsh --config "~\.irshad.new.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "~\dev-boost.omp.json" | Invoke-Expression
 
 function Update-EnvPath {
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") +
@@ -11,8 +11,7 @@ function Update-EnvPath {
     [System.Environment]::GetEnvironmentVariable("Path", "User")
 }
 
-# set-alias vs19 StartVisualStudio2019
-set-alias vs Open-VisualStudio2022
+set-alias vs Open-VisualStudio2026
 
 function Open-VisualStudio2019 {
     $slnfile = (Get-ChildItem -Path .\ -Filter *.sln)[0].Name
@@ -24,8 +23,14 @@ function Open-VisualStudio2022 {
     Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe" $slnfile
 }
 
-function Get-GitMirrorClone {
-	
+function Open-VisualStudio2026 {
+    $slnfile = (Get-ChildItem -Path .\ -Filter *.sln)[0].Name
+    Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE\devenv.exe" $slnfile
+}
+
+# This function will clone a git repository as a mirror if the directory does not exist, or update it if it does.
+# Usage: Get-GitMirrorClone -DirName "C:\path\to\repo.git" -RepoURL "https://github.com/user/repo.git"
+function Get-GitMirrorClone {	
     param (
         [Parameter(Mandatory = $true, Position = 0)] [string]$DirName,
         [Parameter(Mandatory)] [string]$RepoURL
@@ -43,6 +48,161 @@ function Get-GitMirrorClone {
     }
 
     Write-Host ""
+}
+
+# This function will encode a string to Base64. If no input is provided, it will use the contents of the clipboard.
+# Usage: Encode-Base64 -Input "string to encode"
+function Encode-Base64 {
+    param(
+        [Parameter(ValueFromPipeline=$true, ValueFromPipelineByPropertyName=$true)]
+        [string]$Input
+    )
+    process {
+        if (-not $Input) { $Input = Get-Clipboard -Raw }
+        [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($Input))
+    }
+}
+
+# Recursively delete bin, obj, and node_modules folders
+# Usage: Invoke-Cleanup [directory]
+# If no directory is provided, uses current directory
+function Invoke-Cleanup {
+    param(
+        [string]$TargetDir = "."
+    )
+
+    $TargetDir = Resolve-Path $TargetDir
+
+    if (-not (Test-Path $TargetDir -PathType Container)) {
+        Write-Host "Error: '$TargetDir' is not a valid directory." -ForegroundColor Red
+        return
+    }
+
+    $FolderNames = @("bin", "obj", "node_modules", "packages")
+
+    Write-Host "Scanning: $TargetDir" -ForegroundColor Cyan
+    Write-Host "Will delete: $($FolderNames -join ', ')" -ForegroundColor Cyan
+    Write-Host ""
+
+    # Manually traverse directories, pruning matched folders so we don't recurse into them
+    function Find-TargetFolders {
+        param([string]$Path)
+
+        $results = @()
+        try {
+            $children = Get-ChildItem -Path $Path -Directory -ErrorAction SilentlyContinue
+        } catch { return $results }
+
+        foreach ($child in $children) {
+            if ($FolderNames -contains $child.Name) {
+                # Found a match — add it, do NOT recurse into it
+                $results += $child
+            } else {
+                # Not a match — recurse deeper
+                $results += Find-TargetFolders -Path $child.FullName
+            }
+        }
+        return $results
+    }
+
+    $Found = Find-TargetFolders -Path $TargetDir
+
+    if ($Found.Count -eq 0) {
+        Write-Host "Nothing to clean up - no matching folders found." -ForegroundColor Green
+        return
+    }
+
+    # Show what will be deleted with sizes
+    Write-Host "Found the following folders:" -ForegroundColor Yellow
+    foreach ($dir in $Found) {
+        $size = (Get-ChildItem $dir.FullName -Recurse -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum
+        $sizeMB = if ($size -gt 1MB) { "{0:N1} MB" -f ($size / 1MB) } elseif ($size -gt 1KB) { "{0:N1} KB" -f ($size / 1KB) } else { "$size B" }
+        Write-Host "  $($dir.FullName) ($sizeMB)" -ForegroundColor Gray
+    }
+
+    Write-Host ""
+    $confirm = Read-Host "Proceed with deletion? [y/N]"
+
+    if ($confirm -ne "y" -and $confirm -ne "Y") {
+        Write-Host "Aborted. Nothing was deleted." -ForegroundColor Yellow
+        return
+    }
+
+    Write-Host ""
+    Write-Host "Deleting..." -ForegroundColor Cyan
+
+    $deleted = 0
+    $errors = 0
+
+    foreach ($dir in $Found) {
+        try {
+            Remove-Item -Path $dir.FullName -Recurse -Force -ErrorAction Stop
+            Write-Host "  Deleted: $($dir.FullName)" -ForegroundColor Green
+            $deleted++
+        } catch {
+            Write-Host "  Failed:  $($dir.FullName) - $_" -ForegroundColor Red
+            $errors++
+        }
+    }
+
+    Write-Host ""
+    Write-Host "Done. Deleted: $deleted  |  Errors: $errors" -ForegroundColor Cyan
+}
+
+# This function computes a file's checksum, optionally verifying it against a value or a checksum file.
+# Usage: Test-FileChecksum -Path "C:\path\to\file.iso" [-Algorithm SHA256] [-Checksum "abc123..."] [-ChecksumFile "C:\path\to\file.iso.sha256"]
+function Test-FileChecksum {
+    <#
+    .SYNOPSIS
+        Computes a file's checksum, optionally verifying it against a value or a checksum file.
+    .EXAMPLE
+        Test-FileChecksum .\a.iso
+    .EXAMPLE
+        Test-FileChecksum .\a.iso -Algorithm SHA512 -Checksum 'abc123...'
+    .EXAMPLE
+        Test-FileChecksum .\a.iso -ChecksumFile .\a.iso.sha256
+    #>
+    [CmdletBinding(DefaultParameterSetName = 'Compute')]
+    param(
+        [Parameter(Mandatory, Position = 0)]
+        [string]$Path,
+
+        [ValidateSet('MD5', 'SHA1', 'SHA256', 'SHA384', 'SHA512')]
+        [string]$Algorithm = 'SHA256',
+
+        [Parameter(ParameterSetName = 'Value', Mandatory)]
+        [string]$Checksum,
+
+        [Parameter(ParameterSetName = 'File', Mandatory)]
+        [string]$ChecksumFile
+    )
+
+    $item = Get-Item -LiteralPath $Path -ErrorAction Stop
+    $actual = (Get-FileHash -LiteralPath $item.FullName -Algorithm $Algorithm).Hash
+
+    if ($PSCmdlet.ParameterSetName -eq 'Compute') {
+        return [pscustomobject]@{ File = $item.Name; Algorithm = $Algorithm; Hash = $actual }
+    }
+
+    if ($PSCmdlet.ParameterSetName -eq 'File') {
+        $lines = Get-Content -LiteralPath $ChecksumFile -ErrorAction Stop |
+            Where-Object { $_.Trim() }
+        # Prefer the line naming this file (sha256sum style), else use the first line
+        $line = $lines | Where-Object { $_ -like "*$($item.Name)*" } | Select-Object -First 1
+        if (-not $line) { $line = $lines | Select-Object -First 1 }
+        $Checksum = ($line.Trim() -split '\s+')[0]
+    }
+
+    $expected = $Checksum.Trim() -replace '\s', ''
+    $match = $actual -ieq $expected
+
+    Write-Host "Algorithm : $Algorithm"
+    Write-Host "Expected  : $expected"
+    Write-Host "Actual    : $actual"
+    if ($match) { Write-Host 'Result    : MATCH' -ForegroundColor Green }
+    else        { Write-Host 'Result    : MISMATCH' -ForegroundColor Red }
+
+    return $match
 }
 
 # This is an example profile for PSReadLine.

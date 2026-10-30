@@ -1,196 +1,237 @@
-﻿{
-	"$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-	"palette": {
-		"red": "#FE5A30",
-		"orange": "#FEC130",
-		"yellow": "#FEFD30",
-		"green": "#30FE5A",
-		"blue": "#3098FE",
-		"cyan": "#30FEFD",
-		"lime": "#ccff00",
-		"gray": "#BFBFBF"
-	},
-	"final_space": true,
-	"blocks": [
-		{
-			"type": "prompt",
-			"alignment": "left",
-			"newline": true,
-			"segments": [
-				{
-					"type": "root",
-					"style": "plain",
-					"foreground": "p:yellow",
-					"properties": {
-						"prefix": ""
-					}
-				},
-				{
-					"type": "session",
-					"style": "plain",
-					"properties": {
-						"prefix": "",
-						"template": "{{ if .SSHSession }}  {{ end }}<p:blue>{{ .UserName }}</> <p:gray>@</> <p:lime>{{ .HostName }}</>"
-					}
-				},
-				{
-					"type": "path",
-					"style": "plain",
-					"foreground": "p:cyan",
-					"properties": {
-						"prefix": "<p:gray>in </>",
-						"style": "agnoster_short",
-						"max_depth": 2,
-						"enable_hyperlink": true,
-						"mapped_locations": {
-							"E:\\Development": "﬏ ",
-							"D:\\SonarQube": "虜 ",
-							"D:\\Gitlab.com": " "
-						}
-					}
-				},
-				{
-					"type": "git",
-					"style": "plain",
-					"foreground": "p:yellow",
-					"foreground_templates": [
-						"{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
-						"{{ if gt .Ahead 0 }}p:cyan{{ end }}",
-						"{{ if gt .Behind 0 }}p:blue{{ end }}"
-					],
-					"properties": {
-						"fetch_stash_count": true,
-						"fetch_status": true,
-						"fetch_upstream_icon": true,
-						"prefix": "<p:gray>on</> <white>git:</>",
-						"template": "{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }}<p:red>  {{ .Working.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<p:green>  {{ .Staging.String }}</>{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}"
-					}
-				},
-				{
-					"type": "time",
-					"style": "plain",
-					"foreground": "p:gray",
-					"properties": {
-						"prefix": "[ ",
-						"postfix": "] ",
-						"time_format": "_2,  15:04"
-					}
-				},
-				{
-					"type": "node",
-					"style": "plain",
-					"foreground": "#6CA35E",
-					"properties": {
-						"prefix": "[]",
-						"postfix": "",
-						"display_version": false
-					}
-				},
-				{
-					"type": "python",
-					"style": "plain",
-					"foreground": "#96E072",
-					"properties": {
-						"prefix": "[]",
-						"postfix": "",
-						"display_version": false
-					}
-				},
-				{
-					"type": "dotnet",
-					"style": "plain",
-					"foreground": "#3891A6",
-					"properties": {
-						"prefix": "[]",
-						"postfix": "",
-						"display_version": false
-					}
-				},
-				{
-					"type": "java",
-					"style": "plain",
-					"foreground": "#ffffff",
-					"properties": {
-						"prefix": "[]",
-						"postfix": "",
-						"display_version": false
-					}
-				},
-				{
-					"type": "os",
-					"style": "plain",
-					"foreground": "p:blue",
-					"properties": {
-						"prefix": "[",
-						"postfix": "] ",
-						"display_distro_name": true
-					}
-				},
-				{
-					"type": "shell",
-					"style": "plain",
-					"foreground": "#ffffff",
-					"properties": {
-						"prefix": " ",
-						"postfix": " "
-					}
-				},
-				{
-					"type": "battery",
-					"style": "plain",
-					"foreground": "#ffffff",
-					"foreground_templates": [
-						"{{if eq \"Charging\" .State.String}}p:orange{{end}}",
-						"{{if eq \"Discharging\" .State.String}}p:red{{end}}",
-						"{{if eq \"Full\" .State.String}}p:green{{end}}"
-					],
-					"properties": {
-						"discharging_icon": "",
-						"charging_icon": "",
-						"charged_icon": "",
-						"prefix": "<#ffffff>[</>",
-						"postfix": "%<#ffffff>]</>"
-					}
-				},
-				{
-					"type": "exit",
-					"style": "plain",
-					"foreground": "p:green",
-					"foreground_templates": [
-						"{{ if gt .Code 0 }}p:red{{ end }}"
-					],
-					"properties": {
-						"always_enabled": true,
-						"template": "{{ if gt .Code 0 }}{{ else }}{{ end }}"
-					}
-				},
-				{
-					"type": "executiontime",
-					"style": "plain",
-					"foreground": "#ffffff",
-					"properties": {
-						"always_enabled": true,
-						"prefix": ""
-					}
-				}
-			]
-		},
-		{
-			"type": "prompt",
-			"alignment": "left",
-			"newline": true,
-			"segments": [
-				{
-					"foreground": "p:red",
-					"properties": {
-						"postfix": "",
-						"prefix": "",
-						"text": "亮"
-					},
-					"style": "plain",
-					"type": "text"
-				}
-			]
-		}
-	]
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 2,
+  "final_space": true,
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "root",
+          "style": "plain",
+          "template": "\uf0e7 ",
+          "background": "",
+          "foreground": "p:yellow",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "session",
+          "style": "plain",
+          "template": "{{ if .SSHSession }} \uf817 {{ end }}<p:blue>{{ .UserName }}</> <p:gray>@</> <p:lime>{{ .HostName }}</> ",
+          "background": "",
+          "foreground": "",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "path",
+          "style": "plain",
+          "template": "<p:gray>in </>{{ .Path }} ",
+          "properties": {
+            "mapped_locations": {
+              "D:\\Gitlab.com": "\uf296 ",
+              "D:\\SonarQube": "\uf936 ",
+              "E:\\Development": "\ufb0f "
+            },
+            "max_depth": 2,
+            "style": "agnoster_short"
+          },
+          "background": "",
+          "foreground": "p:cyan",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "git",
+          "style": "plain",
+          "foreground_templates": [
+            "{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}",
+            "{{ if gt .Ahead 0 }}p:cyan{{ end }}",
+            "{{ if gt .Behind 0 }}p:blue{{ end }}"
+          ],
+          "template": "<p:gray>on</> <white>git:</>{{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }}<p:red> \uf044 {{ .Working.String }}</>{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}<p:green> \uf046 {{ .Staging.String }}</>{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
+          "properties": {
+            "fetch_stash_count": true,
+            "fetch_status": true,
+            "fetch_upstream_icon": true
+          },
+          "background": "",
+          "foreground": "p:yellow",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "time",
+          "style": "plain",
+          "template": "[\uf5ec {{ .CurrentDate | date .Format }}] ",
+          "properties": {
+            "time_format": "_2, \uf017 15:04"
+          },
+          "background": "",
+          "foreground": "p:gray",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "node",
+          "style": "plain",
+          "template": "[\ue718]{{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }}",
+          "properties": {
+            "fetch_version": false
+          },
+          "background": "",
+          "foreground": "#6CA35E",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "python",
+          "style": "plain",
+          "template": "[\ue235]{{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }}",
+          "properties": {
+            "fetch_version": false
+          },
+          "background": "",
+          "foreground": "#96E072",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "dotnet",
+          "style": "plain",
+          "template": "[\ue77f]{{ if .Unsupported }}\uf071{{ else }}{{ .Full }}{{ end }}",
+          "properties": {
+            "fetch_version": false
+          },
+          "background": "",
+          "foreground": "#3891A6",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "java",
+          "style": "plain",
+          "template": "[\ue738]{{ if .Error }}{{ .Error }}{{ else }}{{ .Full }}{{ end }}",
+          "properties": {
+            "fetch_version": false
+          },
+          "background": "",
+          "foreground": "#ffffff",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "os",
+          "style": "plain",
+          "template": "[{{ if .WSL }}WSL at {{ end }}{{.Icon}}] ",
+          "properties": {
+            "display_distro_name": true
+          },
+          "background": "",
+          "foreground": "p:blue",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "shell",
+          "style": "plain",
+          "template": "\uf68c {{ .Name }} ",
+          "background": "",
+          "foreground": "#ffffff",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "battery",
+          "style": "plain",
+          "foreground_templates": [
+            "{{if eq \"Charging\" .State.String}}p:orange{{end}}",
+            "{{if eq \"Discharging\" .State.String}}p:red{{end}}",
+            "{{if eq \"Full\" .State.String}}p:green{{end}}"
+          ],
+          "template": "<#ffffff>[</>{{ if not .Error }}{{ .Icon }}{{ .Percentage }}{{ end }}{{ .Error }}%<#ffffff>]</>",
+          "properties": {
+            "charged_icon": "\uf583",
+            "charging_icon": "\uf58e",
+            "discharging_icon": "\uf58b"
+          },
+          "background": "",
+          "foreground": "#ffffff",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "exit",
+          "style": "plain",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:red{{ end }}"
+          ],
+          "template": " {{ if gt .Code 0 }}\uf659{{ else }}\uf633{{ end }} ",
+          "properties": {
+            "always_enabled": true
+          },
+          "background": "",
+          "foreground": "p:green",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "template": "{{ .FormattedMs }} ",
+          "properties": {
+            "always_enabled": true
+          },
+          "background": "",
+          "foreground": "#ffffff",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        }
+      ],
+      "newline": true
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "template": "\uf977",
+          "background": "",
+          "foreground": "p:red",
+          "Text": "",
+          "Duration": 0,
+          "NameLength": 0
+        }
+      ],
+      "newline": true
+    }
+  ],
+  "palette": {
+    "blue": "#3098FE",
+    "cyan": "#30FEFD",
+    "gray": "#BFBFBF",
+    "green": "#30FE5A",
+    "lime": "#ccff00",
+    "orange": "#FEC130",
+    "red": "#FE5A30",
+    "yellow": "#FEFD30"
+  }
 }

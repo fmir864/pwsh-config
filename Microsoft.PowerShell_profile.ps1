@@ -5,6 +5,9 @@
 #
 # Each function has an approved Verb-Noun name, with the short command kept as an alias.
 
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
 #region Environment checks
 
 # Test-InteractiveShell: $true when the console is not redirected.

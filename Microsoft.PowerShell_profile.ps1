@@ -1342,71 +1342,60 @@ PowerShell profile commands
 ===========================
 
 Profile:
-  ep / Edit-Profile             Open this profile in the editor.
-  ip /Invoke-Profile            Reload this profile in this session.
-  Update-PowerShell             Upgrade PowerShell with winget if a newer release exists.
+  ep / Edit-Profile                     Open this profile in the editor.
+  ip /Invoke-Profile                    Reload this profile in this session.
+  Update-PowerShell                     Upgrade PowerShell with winget if a newer release exists.
 
 Git:
-  gs / Get-GitStatus            git status
-  ga / Add-GitAll               git add .
-  gcom <message>                git commit -m <message>
-  gpush / gpl / gcl             git push / git pull / git clone
-  gco <branch>                  git checkout <branch>
-  glog                          git log
-  gcoma <message>               git add .; git commit -m <message>
-  lazyg <message>               git add .; git commit; git push
-  g                             Go to your GitHub folder.
+  gs / Get-GitStatus                    git status
+  ga / Add-GitAll                       git add .
+  gcom <message>                        git commit -m <message>
+  gpush / gpl / gcl                     git push / git pull / git clone
+  gco <branch>                          git checkout <branch>
+  glog                                  git log
+  gcoma <message>                       git add .; git commit -m <message>
+  lazyg <message>                       git add .; git commit; git push
+  g                                     Go to your GitHub folder.
 
 Files and folders:
-  touch / nf <name>             Create a file (touch also updates the timestamp).
-  mkcd <dir>                    Create a folder and enter it.
-  ff <name>                     Find files by name.
-  unzip <file>                  Extract a zip here.
-  trash <path>                  Move to the Recycle Bin.
-  docs / dtop                   Go to Documents or Desktop.
-  la / ll                       List files (ll includes hidden).
-  df                            Show volume information.
+  touch / nf <name>                     Create a file (touch also updates the timestamp).
+  mkcd <dir>                            Create a folder and enter it.
+  ff <name>                             Find files by name.
+  unzip <file>                          Extract a zip here.
+  trash <path>                          Move to the Recycle Bin.
+  docs / dtop                           Go to Documents or Desktop.
+  la / ll                               List files (ll includes hidden).
+  df                                    Show volume information.
 
 Text and processes:
-  grep <pattern> [path]         Search files or piped input.
-  sed <f> <a> <b>               Replace text in a file.
-  head / tail <f>               First or last lines of a file.
-  which <name>                  Show where a command comes from.
-  export <name> <value>         Set an environment variable.
-  pgrep / pkill <name>          Find or force-stop processes.
-  k9 <name>                     Same as pkill.
+  grep <pattern> [path]                 Search files or piped input.
+  sed <f> <a> <b>                       Replace text in a file.
+  head / tail <f>                       First or last lines of a file.
+  which <name>                          Show where a command comes from.
+  export <name> <value>                 Set an environment variable.
+  pgrep / pkill <name>                  Find or force-stop processes.
+  k9 <name>                             Same as pkill.
 
 System and network:
-  su / Start-AdminShell         Open an elevated shell here.
-  uptime                        Show how long the computer has been running.
-  sysinfo                       Show computer information.
-  flushdns                      Clear the DNS cache.
-  pubip                         Show your public IP.
-  Clear-Cache                   Delete temporary files (supports -WhatIf).
+  su / Start-AdminShell                 Open an elevated shell here.
+  uptime                                Show how long the computer has been running.
+  sysinfo                               Show computer information.
+  flushdns                              Clear the DNS cache.
+  pubip                                 Show your public IP.
+  Clear-Cache                           Delete temporary files (supports -WhatIf).
 
 Clipboard:
-  cpy <text>                    Copy text.
-  pst                           Paste clipboard text.
-
-WinUtil (downloads and runs scripts):
-  winutil / winutildev          Run the WinUtil release or prerelease script.
-  windev                        Compile and run the local WinUtil checkout.
+  cpy <text>                            Copy text.
+  pst                                   Paste clipboard text.
 
 Development:
-  vs                            Open the solution in Visual Studio 2026.
-  Open-VisualStudio2019/2022    Open the solution in another Visual Studio version.
-  dev                           Go to D:\Development.
-  up [n]                        Go up n folders (default 1).
-  efadd <name> / efup           Add an EF Core migration / apply migrations.
-  New-DotNetFrameworkSolution   Create a solution from the template folder.
-  Invoke-Cleanup                Delete bin, obj, node_modules and packages folders.
-  Get-GitMirrorClone            Mirror a Git repo, or update an existing mirror.
-  Get-Changelog (cl)            Write commit subjects from a tag to HEAD.
-  Test-FileChecksum (chksum)    Check a file's hash.
-  Encode-Base64 (b64)           Base64-encode text, or the clipboard if empty.
-  Update-EnvPath (uenv)         Reload PATH in this session.
-  Optimize-PSReadLineHistory    Remove duplicate history entries and trim to the limit.
-  Import-TerminalIcons          Load Terminal-Icons, or show how to install it.
+  up [n]                                Go up n folders (default 1).
+  Invoke-Cleanup                        Delete bin, obj, node_modules and packages folders.
+  Test-FileChecksum (chksum)            Check a file's hash.
+  Encode-Base64 (b64)                   Base64-encode text, or the clipboard if empty.
+  Update-EnvPath (uenv)                 Reload PATH in this session.
+  Optimize-PSReadLineHistory (upsr)     Remove duplicate history entries and trim to the limit.
+  Import-TerminalIcons                  Load Terminal-Icons, or show how to install it.
 
 WinGet:
   wup / wsr / wi / wun          Upgrade / search / install / uninstall packages.
@@ -1449,14 +1438,10 @@ Set-Alias -Name dev -Value Set-DevFolder
 Set-Alias -Name b64 -Value Encode-Base64
 Set-Alias -Name chksum -Value Test-FileChecksum
 
-Set-Alias -Name vs -Value Open-VisualStudio2026
-Set-Alias efadd Add-EfMigration
-Set-Alias efup Update-EfDatabase
-
-Set-Alias wup Update-WinGetPackage
-Set-Alias wsr Search-WinGetPackage
-Set-Alias wi Install-WinGetPackage
-Set-Alias wun Uninstall-WinGetPackage
+Set-Alias -Name wup -Value Update-WinGetPackage
+Set-Alias -Name wsr -Value Search-WinGetPackage
+Set-Alias -Name wi -Value Install-WinGetPackage
+Set-Alias -Name wun -Value Uninstall-WinGetPackage
 
 Set-Alias -Name grep -Value Search-Text
 Set-Alias -Name sed -Value Update-FileText

@@ -79,11 +79,6 @@ function Edit-Profile {
     & $EDITOR $PROFILE.CurrentUserCurrentHost
 }
 
-# Invoke-Profile: reloads this profile in the current session.
-function Invoke-Profile {
-    . $PROFILE.CurrentUserCurrentHost
-}
-
 #endregion Editor
 
 #region Window title and prompt
@@ -945,6 +940,29 @@ function Expand-ZipHere {
     Expand-Archive -Path $File -DestinationPath (Get-Location) -Force
 }
 
+# Expand-ZipToFolder (alias: unzipto): extracts a zip into a folder.
+# Without -Destination, creates a folder named after the zip (without .zip) in the current folder.
+# Example: unzipto C:\Downloads\tools.zip   or   unzipto tools.zip D:\Tools
+function Expand-ZipToFolder {
+    param(
+        [Parameter(Mandatory)][string]$File,
+        [string]$Destination
+    )
+
+    if (-not (Test-Path -Path $File -PathType Leaf)) {
+        Write-Error "File not found: $File"
+        return
+    }
+
+    $zip = Get-Item -LiteralPath $File
+    if (-not $Destination) {
+        $Destination = Join-Path (Get-Location) $zip.BaseName
+    }
+
+    Expand-Archive -LiteralPath $zip.FullName -DestinationPath $Destination -Force
+    Write-Host "Extracted '$($zip.Name)' to '$Destination'" -ForegroundColor Green
+}
+
 # Remove-ToRecycleBin (alias: trash): sends a file or folder to the Recycle Bin instead of deleting it.
 function Remove-ToRecycleBin {
     param([Parameter(Mandatory)][string]$Path)
@@ -979,10 +997,12 @@ function Remove-ToRecycleBin {
     }
 }
 
-# Set-LocationDocuments (alias: docs) and Set-LocationDesktop (alias: dtop): jump to Documents or Desktop.
+# Set-LocationDocuments (alias: docs) and Set-LocationDesktop (alias: dtop) and Set-LocationDownloads (alias: dl): jump to Documents or Desktop or Downloads.
 function Set-LocationDocuments { Set-Location -Path ([Environment]::GetFolderPath('MyDocuments')) }
 
 function Set-LocationDesktop { Set-Location -Path ([Environment]::GetFolderPath('Desktop')) }
+
+function Set-LocationDownloads { Set-Location -Path (Join-Path $HOME 'Downloads') }
 
 # Get-ChildItemTable (alias: la): lists visible files in a table.
 function Get-ChildItemTable { Get-ChildItem | Format-Table -AutoSize }
@@ -1015,11 +1035,6 @@ function Import-TerminalIcons {
 function Move-Up {
     param([ValidateRange(1, 100)][int]$Levels = 1)   # Number of folders to go up (1 to 100).
     Set-Location ('..\' * $Levels)
-}
-
-# Set-DevFolder (alias: dev): jumps to the main development folder.
-function Set-DevFolder {
-    Set-Location 'D:\Development'
 }
 
 # Base64-encodes UTF-8 text. Takes input from -Text, the pipeline, or the clipboard when empty.
@@ -1087,6 +1102,23 @@ function Test-FileChecksum {
     else        { Write-Host 'Result    : MISMATCH' -ForegroundColor Red }
 
     return $match
+}
+
+function New-ApiKey {
+    param(
+        [int]$Bytes = 32   # 32 bytes = 64 hex characters
+    )
+
+    $buffer = New-Object byte[] $Bytes
+    $rng = New-Object System.Security.Cryptography.RNGCryptoServiceProvider
+    try {
+        $rng.GetBytes($buffer)
+    }
+    finally {
+        $rng.Dispose()
+    }
+
+    -join ($buffer | ForEach-Object { '{0:x2}' -f $_ })
 }
 
 #endregion Files and folders
@@ -1343,7 +1375,6 @@ PowerShell profile commands
 
 Profile:
   ep / Edit-Profile                     Open this profile in the editor.
-  ip /Invoke-Profile                    Reload this profile in this session.
   Update-PowerShell                     Upgrade PowerShell with winget if a newer release exists.
 
 Git:
@@ -1363,7 +1394,7 @@ Files and folders:
   ff <name>                             Find files by name.
   unzip <file>                          Extract a zip here.
   trash <path>                          Move to the Recycle Bin.
-  docs / dtop                           Go to Documents or Desktop.
+  docs / dtop / dl                      Go to Documents or Desktop or Downloads.
   la / ll                               List files (ll includes hidden).
   df                                    Show volume information.
 
@@ -1396,6 +1427,7 @@ Development:
   Update-EnvPath (uenv)                 Reload PATH in this session.
   Optimize-PSReadLineHistory (upsr)     Remove duplicate history entries and trim to the limit.
   Import-TerminalIcons                  Load Terminal-Icons, or show how to install it.
+  New-ApiKey (key)                      Generate a random API key (hex string).
 
 WinGet:
   wup / wsr / wi / wun          Upgrade / search / install / uninstall packages.
@@ -1412,7 +1444,6 @@ Git (more):
 #region Aliases
 
 Set-Alias -Name ep -Value Edit-Profile
-Set-Alias -Name ip -Value Invoke-Profile
 Set-Alias -Name su -Value Start-AdminShell
 Set-Alias -Name uptime -Value Get-SystemUptime
 Set-Alias -Name sysinfo -Value Get-SystemInfo
@@ -1427,9 +1458,11 @@ Set-Alias -Name nf -Value New-File
 Set-Alias -Name mkcd -Value New-DirectoryAndEnter
 Set-Alias -Name ff -Value Find-FileByName
 Set-Alias -Name unzip -Value Expand-ZipHere
+Set-Alias -Name unzipto -Value Expand-ZipToFolder
 Set-Alias -Name trash -Value Remove-ToRecycleBin
 Set-Alias -Name docs -Value Set-LocationDocuments
 Set-Alias -Name dtop -Value Set-LocationDesktop
+Set-Alias -Name dl -Value Set-LocationDownloads
 Set-Alias -Name la -Value Get-ChildItemTable
 Set-Alias -Name ll -Value Get-ChildItemAll
 Set-Alias -Name df -Value Get-VolumeInfo
@@ -1437,6 +1470,9 @@ Set-Alias -Name up -Value Move-Up
 Set-Alias -Name dev -Value Set-DevFolder
 Set-Alias -Name b64 -Value Encode-Base64
 Set-Alias -Name chksum -Value Test-FileChecksum
+Set-Alias -Name key -Value New-ApiKey
+
+Set-Alias -Name upsr -Value Optimize-PSReadLineHistory
 
 Set-Alias -Name wup -Value Update-WinGetPackage
 Set-Alias -Name wsr -Value Search-WinGetPackage
